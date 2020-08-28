@@ -9,5 +9,7 @@ class Organisation extends Model
 {
   use UseUuid;
 
-  protected $guarded = []; 
+  public function users(){
+      return $this->hasMany(User::class);
+  }
 }

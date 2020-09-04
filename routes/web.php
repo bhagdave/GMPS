@@ -24,6 +24,9 @@ Route::get('/profile', 'HomeController@profile')->name('profile')->middleware('a
 Route::post('/profile', 'HomeController@saveProfile')->middleware('auth');
 
 Route::get('/groups', 'GroupController@index')->name('groups')->middleware('auth');
-Route::get('/group/{uuid}', 'GroupController@view')->middleware('auth');
 Route::get('/group/add', 'GroupController@add')->middleware('auth');
 Route::post('/group/add', 'GroupController@store')->middleware('auth');
+Route::get('/group/{uuid}', 'GroupController@view')->middleware('auth');
+Route::get('/group/invite/{uuid}', 'GroupController@invite')->middleware('auth');
+Route::post('/group/invite/{uuid}', 'GroupController@sendInvite')->middleware('auth');
+Route::get('/group/invite/{uuid}/accept/{email}', 'GroupController@accept')->name('group.accept')->middleware('auth');

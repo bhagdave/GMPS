@@ -16,7 +16,7 @@
                     <p class="card-text">No participants invited yet!</p>
                 </div>
                 <div class="card-footer">
-                    <a href="/group/invite">
+                    <a href="/group/invite/{{ $group->id }}">
                         <svg class="bi" width="24" height="24" fill="currentColor">
                              <use xlink:href="/images/bootstrap-icons.svg#person-plus-fill"/>
                         </svg>

@@ -55,12 +55,14 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('home') }}">
+                                    <a class="dropdown-item border-left border-secondary" href="{{ route('home') }}">
                                         {{ __('Home') }}
                                     </a>
                                     <a class="dropdown-item border-left border-primary" href="{{ route('groups') }}">
                                         {{ __('Groups') }}
                                     </a>
+                                    <a class="dropdown-item border-left border-success" href="{{ route('profile') }}">
+                                        {{ __('Profile') }}
                                     </a>
                                     <a class="dropdown-item border-left border-danger" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

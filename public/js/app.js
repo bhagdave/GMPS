@@ -49744,6 +49744,10 @@ var app = new Vue({
   el: '#app'
 });
 
+function goBack() {
+  window.history.back();
+}
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

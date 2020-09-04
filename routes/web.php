@@ -20,6 +20,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
+Route::get('/profile', 'HomeController@profile')->name('profile')->middleware('auth');
+Route::post('/profile', 'HomeController@saveProfile')->middleware('auth');
 
 Route::get('/groups', 'GroupController@index')->name('groups')->middleware('auth');
 Route::get('/group/add', 'GroupController@add')->middleware('auth');

@@ -30,4 +30,12 @@ class GroupController extends Controller
         $group->save();
         return redirect('groups')->with('status', 'Group created');
     }
+    public function view($uuid){
+        $user = Auth::user();
+        $group = Group::find($uuid);
+        if (isset($group)){
+            return view('groups.view', compact('user', 'group'));
+        }
+        return redirect()->back()->with('status', 'Group not found');
+    }
 }

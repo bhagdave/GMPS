@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header bg-primary">{{ $user->name }}'s {{ __('Groups') }} </div>
+                <div class="card-header bg-primary">{{ $group->name }} {{ __('Group') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -13,20 +13,12 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    @if (count($user->groups) > 0)
-                        <ul class="list-group list-group-flush">
-                            @foreach($user->groups as $group)
-                                <li class="list-group-item"><a href="/group/{{ $group->id }}">{{ $group->name }}</a></li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <p class="card-text">No groups created yet!</p>
-                    @endif
+                    <p class="card-text">No participants invited yet!</p>
                 </div>
                 <div class="card-footer">
-                    <a href="/group/add">
+                    <a href="/group/invite">
                         <svg class="bi" width="24" height="24" fill="currentColor">
-                             <use xlink:href="images/bootstrap-icons.svg#plus-square-fill"/>
+                             <use xlink:href="/images/bootstrap-icons.svg#person-plus-fill"/>
                         </svg>
                     </a>
                 </div>

@@ -33,6 +33,7 @@ class GroupController extends Controller
         $group->save();
         return redirect('groups')->with('status', 'Group created');
     }
+
     public function view($uuid){
         $user = Auth::user();
         $group = Group::find($uuid);
@@ -41,6 +42,7 @@ class GroupController extends Controller
         }
         return redirect()->back()->with('status', 'Group not found');
     }
+
     public function invite($uuid){
         $user = Auth::user();
         $group = Group::find($uuid);
@@ -49,7 +51,11 @@ class GroupController extends Controller
         }
         return redirect()->back()->with('status', 'Group not found');
     }
+
     public function sendInvite(Request $request, $uuid){
+        $request->validate([
+            'email' => 'required|unique:users,email|max:125'
+        ]);
         $group = Group::find($uuid);
         if (isset($group)){
             $signedUrl =  URL::temporarySignedRoute('group.accept', 
@@ -70,6 +76,7 @@ class GroupController extends Controller
         }
         return redirect()->back()->with('status', 'Group not found');
     }
+
     public function accept($group, $email, Request $request){
         if ( $request->hasValidSignature() ){
             return "Accepted by $email for $group.";

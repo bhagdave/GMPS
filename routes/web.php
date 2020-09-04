@@ -22,3 +22,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
 Route::get('/groups', 'GroupController@index')->name('groups')->middleware('auth');
+Route::get('/group/add', 'GroupController@add')->middleware('auth');
+Route::post('/group/add', 'GroupController@store')->middleware('auth');

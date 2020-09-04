@@ -28,7 +28,7 @@
                     <div class="card-footer">
                         <div class="btn-group" role="group">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="button" onclick="goBack()" class="btn btn-danger">Cancel</button>
+                            <a href="/groups" class="btn btn-danger">Cancel</a>
                         </div>
                     </div>
                 </form>
@@ -36,9 +36,4 @@
         </div>
     </div>
 </div>
-<script>
-function goBack() {
-   window.history.back();
-}
-</script>
 @endsection

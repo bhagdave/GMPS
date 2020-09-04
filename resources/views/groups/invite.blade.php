@@ -10,6 +10,11 @@
                     <div class="card-header bg-primary">{{ __('Invite Particpant') }} to {{ $group->name }} </div>
 
                     <div class="card-body">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
                         @if ($errors->any())
                             <div class="alert alert-danger" role="alert">
                                 <ul id="errors">
@@ -28,7 +33,7 @@
                     <div class="card-footer">
                         <div class="btn-group" role="group">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="button" onclick="goBack()" class="btn btn-danger">Cancel</button>
+                            <a href="/group/{{ $group->id }}" class="btn btn-danger">Cancel</a>
                         </div>
                     </div>
                 </form>

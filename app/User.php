@@ -44,4 +44,7 @@ class User extends Authenticatable
         return $this->hasMany(Group::class, 'created_user_id');
     }
 
+    public function particpant(){
+        return $this->hasOne(Particpant::class);
+    }
 }

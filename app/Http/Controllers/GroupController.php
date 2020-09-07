@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\URL;
 use Auth;
 use Mail;
 use App\Group;
+use App\User;
 use App\Mail\InviteParticipant;
 
 class GroupController extends Controller
@@ -79,8 +80,18 @@ class GroupController extends Controller
 
     public function accept($group, $email, Request $request){
         if ( $request->hasValidSignature() ){
-            return "Accepted by $email for $group.";
+            session([
+                'group' => $group,
+                'email' => $email
+            ]);
+            return view('groups.accept', compact( 'group', 'email'));
         }
         abort(403);
+    }
+
+    public function registerFromAccept(Request $request){
+        $email = $request->session()->get('email');
+        $group = $request->session()->get('group');
+        return "Email:$email and Group:$group";
     }
 }

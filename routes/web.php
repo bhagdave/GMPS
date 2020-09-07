@@ -29,4 +29,5 @@ Route::post('/group/add', 'GroupController@store')->middleware('auth');
 Route::get('/group/{uuid}', 'GroupController@view')->middleware('auth');
 Route::get('/group/invite/{uuid}', 'GroupController@invite')->middleware('auth');
 Route::post('/group/invite/{uuid}', 'GroupController@sendInvite')->middleware('auth');
-Route::get('/group/invite/{uuid}/accept/{email}', 'GroupController@accept')->name('group.accept')->middleware('auth');
+Route::get('/group/invite/{uuid}/accept/{email}', 'GroupController@accept')->name('group.accept');
+Route::post('/group/accept/invite', 'GroupController@registerFromAccept')->name('group.accept.invite');

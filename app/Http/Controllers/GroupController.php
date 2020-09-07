@@ -54,7 +54,7 @@ class GroupController extends Controller
 
     public function sendInvite(Request $request, $uuid){
         $request->validate([
-            'email' => 'required|unique:users,email|max:125'
+            'email' => 'required|max:125'
         ]);
         $group = Group::find($uuid);
         if (isset($group)){

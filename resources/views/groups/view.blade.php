@@ -30,11 +30,18 @@
                                         <td>{{ $participant->pivot->type  }}</td>
                                         <td>{{ $participant->pivot->created_at  }}</td>
                                         <td>
-                                            <a href="/participant/remove/{{ $group->id }}/{{ $participant->id }}">
-                                                <svg class="bi" width="24" height="24" fill="currentColor">
-                                                     <use xlink:href="/images/bootstrap-icons.svg#person-x-fill"/>
-                                                </svg>
-                                            </a>
+                                            @if ($participant->pivot->type != 'owner')
+                                                <a class="pr-2" href="/participant/remove/{{ $group->id }}/{{ $participant->id }}">
+                                                    <svg class="bi" width="24" height="24" fill="currentColor">
+                                                         <use xlink:href="/images/bootstrap-icons.svg#person-x-fill"/>
+                                                    </svg>
+                                                </a>
+                                                <a href="/chat/{{ $participant->id }}">
+                                                    <svg class="bi" width="24" height="24" fill="currentColor">
+                                                         <use xlink:href="/images/bootstrap-icons.svg#chat-dots-fill"/>
+                                                    </svg>
+                                                </a>
+                                            @endif
                                         </td>
                                     <tr>
                                 @endforeach

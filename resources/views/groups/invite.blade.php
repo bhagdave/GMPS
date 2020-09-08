@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <form method="post">
+                <form action="/participant/invite/{{ $group->id }}" method="post">
                     @csrf
                     <div class="card-header bg-primary">{{ __('Invite Particpant') }} to {{ $group->name }} </div>
 

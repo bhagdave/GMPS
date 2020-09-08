@@ -13,7 +13,36 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <p class="card-text">No participants invited yet!</p>
+                    @if (isset($group->participants))
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Joined</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($group->participants as $participant)
+                                    <tr scope="row">
+                                        <td>{{ $participant->name  }}</td>
+                                        <td>{{ $participant->pivot->type  }}</td>
+                                        <td>{{ $participant->pivot->created_at  }}</td>
+                                        <td>
+                                            <a href="/participant/remove/{{ $group->id }}/{{ $participant->id }}">
+                                                <svg class="bi" width="24" height="24" fill="currentColor">
+                                                     <use xlink:href="/images/bootstrap-icons.svg#person-x-fill"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    <tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @else
+                        <p class="card-text">No participants invited yet!</p>
+                    @endif
                 </div>
                 <div class="card-footer">
                     <a href="/group/invite/{{ $group->id }}">

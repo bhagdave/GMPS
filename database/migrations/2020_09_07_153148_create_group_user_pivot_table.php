@@ -13,7 +13,7 @@ class CreateGroupUserPivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('groups_users', function (Blueprint $table) {
+        Schema::create('group_user', function (Blueprint $table) {
             $table->string('group_id', 40);
             $table->string('user_id', 40);
             $table->string('type', 20);
@@ -28,6 +28,6 @@ class CreateGroupUserPivotTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups_users');
+        Schema::dropIfExists('group_user');
     }
 }

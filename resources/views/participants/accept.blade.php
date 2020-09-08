@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('group.accept.invite') }}">
+                    <form method="POST" action="{{ route('participant.accept.invite') }}">
                         @csrf
 
                         <div class="form-group row">

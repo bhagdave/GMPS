@@ -14,7 +14,7 @@ class AddOrganisationIdToUser extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->uuid('organisation_id');
+            $table->uuid('organisation_id')->nullable();
         });
     }
 

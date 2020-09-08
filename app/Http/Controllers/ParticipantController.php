@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Hash;
 use Auth;
 use Mail;
 use App\Group;
@@ -29,7 +30,7 @@ class ParticipantController extends Controller
         if (isset($group)){
             $invitedUser = $this->getInvitedUser($request->input('email'));
             if (isset($invitedUser)){
-                $this->attachInvitedUserToGroup($invitedUser, $group);
+                $this->attachInvitedUserToGroup($invitedUser, $uuid);
                 return redirect()->back()->with('status', 'User added to group');
             }
             $signedUrl = $this->getSignedUrl($uuid, $request->input('email'));
@@ -44,7 +45,7 @@ class ParticipantController extends Controller
     }
 
     private function attachInvitedUserToGroup($user, $group){
-        $user->groups()->attach($group->id, [
+        $user->groups()->attach($group, [
             'type' => 'participant',
             'created_at' => now(),
             'updated_at' => now()
@@ -52,7 +53,7 @@ class ParticipantController extends Controller
     }
 
     private function getSignedUrl($group, $email){
-        return  URL::temporarySignedRoute('group.accept', 
+        return  URL::temporarySignedRoute('participant.accept', 
             now()->addDays(7),
             [
                 'uuid' => $group, 
@@ -69,5 +70,38 @@ class ParticipantController extends Controller
                 ]
             )
         );
+    }
+
+    public function accept($group, $email, Request $request){
+        if ( $request->hasValidSignature() ){
+            session([
+                'group' => $group,
+                'email' => $email
+            ]);
+            return view('participants.accept');
+        }
+        abort(403);
+    }
+
+    public function registerFromAccept(Request $request){
+        $request->validate([
+            'nickname' => 'required|unique:users|max:100',
+            'name' => 'required|unique:users|max:100',
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+        $email = $request->session()->get('email');
+        $group = $request->session()->get('group');
+        $user = $this->createUser($request, $email);
+        $this->attachInvitedUserToGroup($user, $group);
+        return redirect('login')->with('status', 'Registered - Please login');
+    }
+
+    private function createUser(Request $request, $email){
+        return User::create([
+            'name' => $request->input('name'),
+            'nickname' => $request->input('nickname'),
+            'email' => $email,
+            'password' => Hash::make($request->input('password')),
+        ]);
     }
 }

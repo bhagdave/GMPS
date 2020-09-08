@@ -40,11 +40,12 @@ class User extends Authenticatable
     public function organisation(){
         return $this->belongsTo(Organisation::class);
     }
-    public function groups(){
+    public function owns(){
         return $this->hasMany(Group::class, 'created_user_id');
     }
 
-    public function particpant(){
-        return $this->hasOne(Particpant::class);
+    public function groups(){
+        return $this->belongsToMany(Group::class);
     }
+
 }

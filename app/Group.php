@@ -18,6 +18,6 @@ class Group extends Model
   }
 
   public function participants(){
-      return $this->belongsToMany(Particpant::class);
+      return $this->belongsToMany(User::class);
   }
 }

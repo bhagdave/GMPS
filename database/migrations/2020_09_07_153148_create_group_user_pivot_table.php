@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGroupParticipantsPivotTable extends Migration
+class CreateGroupUserPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateGroupParticipantsPivotTable extends Migration
      */
     public function up()
     {
-        Schema::create('groups_participants', function (Blueprint $table) {
-            $table->id();
+        Schema::create('groups_users', function (Blueprint $table) {
+            $table->string('group_id', 40);
+            $table->string('user_id', 40);
+            $table->string('type', 20);
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateGroupParticipantsPivotTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups_participants');
+        Schema::dropIfExists('groups_users');
     }
 }

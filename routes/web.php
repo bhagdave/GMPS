@@ -34,3 +34,5 @@ Route::get('/group/invite/{uuid}', 'ParticipantController@invite')->middleware('
 Route::post('/participant/invite/{uuid}', 'ParticipantController@sendInvite')->middleware('auth');
 Route::get('/participant/invite/{uuid}/accept/{email}', 'ParticipantController@accept')->name('participant.accept');
 Route::post('/participant/accept/invite', 'ParticipantController@registerFromAccept')->name('participant.accept.invite');
+
+Route::get('/organisation/{uuid}', 'OrganisationController@view')->middleware('auth');

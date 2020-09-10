@@ -64,6 +64,11 @@
                                     <a class="dropdown-item border-left border-success" href="{{ route('profile') }}">
                                         {{ __('Profile') }}
                                     </a>
+                                    @if ( Auth::user()->main )
+                                        <a class="dropdown-item border-left border-warning" href="{{ url('organisation/' . Auth::user()->organisation_id) }}">
+                                            {{ __('Organisation') }}
+                                        </a>
+                                    @endif
                                     <a class="dropdown-item border-left border-danger" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -30,8 +30,8 @@
                                         <td>{{ $user->nickname  }}</td>
                                         <td>{{ $user->email  }}</td>
                                         <td>
-                                            @if (!$user->main)
-                                                <a class="pr-2" href="/user/delete/{{ $user->id }}">
+                                            @if ($user->main)
+                                                <a class="deleteUser pr-2"  data-id="{{ $user->id}}" href="#">
                                                     <svg class="bi" width="24" height="24" fill="bg-warning">
                                                          <use xlink:href="/images/bootstrap-icons.svg#person-x-fill"/>
                                                     </svg>
@@ -64,4 +64,24 @@
         </div>
     </div>
 </div>
+<form method="DELETE" action="/user/delete/" id="deleteForm" class="d-none">
+    <input type="hidden" value="" id="deleteFormId">
+</form>
+@include('partials.confirm-modal')
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function(){
+        $('.deleteUser').click(function(e){
+            var $deleteLink = $(this);
+
+            $('#confirm').modal({ backdrop: 'static', keyboard: false})
+                .on('click', '#delete-btn', function(){
+                    userId = $($deleteLink).data('id');
+                    $('#deleteFormId').val(userId);
+                    $('#deleteForm').submit();
+                });
+        });
+    });
+</script>
 @endsection

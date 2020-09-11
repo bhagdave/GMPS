@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Hash;
 use Mail;
 use Auth;
 use App\User;
@@ -57,5 +58,38 @@ class UserController extends Controller
                 ]
             )
         );
+    }
+
+    public function accept($organisation, $email, Request $request){
+        if ( $request->hasValidSignature() ){
+            session([
+                'organisation' => $organisation,
+                'email' => $email
+            ]);
+            return view('user.accept');
+        }
+        abort(403);
+    }
+
+    public function registerFromAccept(Request $request){
+        $request->validate([
+            'nickname' => 'required|unique:users|max:100',
+            'name' => 'required|unique:users|max:100',
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+        $email = $request->session()->get('email');
+        $organisation = $request->session()->get('organisation');
+        $this->createUser($request, $email, $organisation);
+        return redirect('login')->with('status', 'Registered - Please login');
+    }
+
+    private function createUser(Request $request, $email, $organisation){
+        return User::create([
+            'name' => $request->input('name'),
+            'nickname' => $request->input('nickname'),
+            'organisation_id'=> $organisation,
+            'email' => $email,
+            'password' => Hash::make($request->input('password')),
+        ]);
     }
 }

@@ -41,3 +41,4 @@ Route::get('/organisation/invite/{uuid}', 'OrganisationController@inviteUser')->
 Route::delete('/user/delete', 'UserController@delete')->middleware('auth');
 Route::post('/user/invite/{uuid}', 'UserController@sendInvite')->middleware('auth');
 Route::get('/user/invite/{uuid}/accept/{email}', 'UserController@accept')->name('user.accept');
+Route::post('/user/accept/invite', 'UserController@registerFromAccept')->name('user.accept.invite');

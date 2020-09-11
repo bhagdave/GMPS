@@ -30,7 +30,7 @@
                                         <td>{{ $user->nickname  }}</td>
                                         <td>{{ $user->email  }}</td>
                                         <td>
-                                            @if ($user->main)
+                                            @if (!$user->main)
                                                 <a class="deleteUser pr-2"  data-id="{{ $user->id}}" href="#">
                                                     <svg class="bi" width="24" height="24" fill="bg-warning">
                                                          <use xlink:href="/images/bootstrap-icons.svg#person-x-fill"/>
@@ -64,8 +64,10 @@
         </div>
     </div>
 </div>
-<form method="DELETE" action="/user/delete/" id="deleteForm" class="d-none">
-    <input type="hidden" value="" id="deleteFormId">
+<form method="post" action="/user/delete/" id="deleteForm" class="d-none">
+    @csrf
+    @method('delete')
+    <input name="id" type="hidden" value="" id="deleteFormId">
 </form>
 @include('partials.confirm-modal')
 @endsection

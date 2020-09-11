@@ -95,4 +95,14 @@ class ParticipantController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
     }
+    public function remove($group, $participant){
+        echo('1');
+        $user = User::find($participant);
+        echo('2');
+        $message = "Removed->" . $user->name;
+        echo('3');
+        $user->groups()->detach($group);
+        echo('4');
+        return redirect()->back()->with('status', $message);
+    }
 }

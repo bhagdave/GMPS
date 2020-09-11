@@ -36,5 +36,8 @@ Route::get('/participant/invite/{uuid}/accept/{email}', 'ParticipantController@a
 Route::post('/participant/accept/invite', 'ParticipantController@registerFromAccept')->name('participant.accept.invite');
 
 Route::get('/organisation/{uuid}', 'OrganisationController@view')->middleware('auth');
+Route::get('/organisation/invite/{uuid}', 'OrganisationController@inviteUser')->middleware('auth');
 
 Route::delete('/user/delete', 'UserController@delete')->middleware('auth');
+Route::post('/user/invite/{uuid}', 'UserController@sendInvite')->middleware('auth');
+Route::get('/user/invite/{uuid}/accept/{email}', 'UserController@accept')->name('user.accept');

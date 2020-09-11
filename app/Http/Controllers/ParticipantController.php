@@ -33,7 +33,7 @@ class ParticipantController extends Controller
                 $this->attachInvitedUserToGroup($invitedUser, $uuid);
                 return redirect()->back()->with('status', 'User added to group');
             }
-            $signedUrl = $this->getSignedUrl($uuid, $request->input('email'));
+            $signedUrl = $this->getSignedUrl('participant.accept', $uuid, $request->input('email'));
             $this->sendInviteEmail($request->input('email'), $signedUrl);
             return redirect()->back()->with('status', 'Invite sent');
         }
@@ -52,15 +52,6 @@ class ParticipantController extends Controller
         ]);
     }
 
-    private function getSignedUrl($group, $email){
-        return  URL::temporarySignedRoute('participant.accept', 
-            now()->addDays(7),
-            [
-                'uuid' => $group, 
-                'email' => $email
-            ]
-        );
-    }
 
     private function sendInviteEmail($email, $signedUrl){
         Mail::to($email)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Organisation;
+use Auth;
 
 class OrganisationController extends Controller
 {
@@ -15,4 +16,13 @@ class OrganisationController extends Controller
         }
         return redirect()->back()->with('status', 'Group not found');
     } 
+
+    public function inviteUser($uuid){
+        $user = Auth::user();
+        $organisation = Organisation::find($uuid);
+        if (isset($organisation)){
+            return view('organisation.invite', compact('user','organisation'));
+        }
+        return redirect()->back()->with('status', 'Organisation not found');
+    }
 }

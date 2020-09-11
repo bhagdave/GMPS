@@ -55,7 +55,7 @@
                 </div>
                 <div class="card-footer">
                     <a href="/organisation/invite/{{ $organisation->id }}">
-                        <svg class="bi" width="24" height="24" fill="bg-warning">
+                        <svg class="bi" width="24" height="24" fill="currentColor">
                              <use xlink:href="/images/bootstrap-icons.svg#person-plus-fill"/>
                         </svg>
                     </a>

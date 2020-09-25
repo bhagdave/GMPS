@@ -4,6 +4,7 @@ namespace App\Matrix;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Exception;
+use App\Matrix\MatrixSession;
 
 class Matrix{
 
@@ -36,6 +37,7 @@ class Matrix{
     private function setupResources(){
         $this->baseUrl = $this->domain.'_matrix/client/r0';
         $this->client = new Client(['verify' => false]);
+        $this->session = new MatrixSession($this);
     }
 
     public function showDebugInfo(){

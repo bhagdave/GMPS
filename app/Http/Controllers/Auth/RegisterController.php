@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use App\Matrix\Matrix;
+use App\Matrix\UserData;
 use App\Organisation;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class RegisterController extends Controller
 {
@@ -31,15 +34,17 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+    protected $matrix;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Matrix $matrix)
     {
         $this->middleware('guest');
+        $this->matrix = $matrix;
     }
 
     /**
@@ -66,13 +71,22 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $this->registerSynapseUser($data['name'], $data['password']);
         $organisation = Organisation::create(['name' => $data['company_name']]);
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'main' => 1,
             'organisation_id' => $organisation->id,
         ]);
+        return $user;
+    }
+
+    private function registerSynapseUser($name, $password){
+        $userData = new UserData($this->matrix);
+        $name = str_replace(' ', '', $name);
+        $regData = $userData->register($name, $password);
+        ddd($regData);
     }
 }

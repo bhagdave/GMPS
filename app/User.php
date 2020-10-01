@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'organisation_id'
+        'name', 'email', 'password', 'organisation_id', 'synapse_user_id', 'synapse_access_token', 'synapse_device_id'
     ];
 
     /**

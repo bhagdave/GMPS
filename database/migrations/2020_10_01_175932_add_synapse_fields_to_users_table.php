@@ -15,7 +15,6 @@ class AddSynapseFieldsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('synapse_user_id')->nullable();
-            $table->longtext('synapse_access_token')->nullable();
             $table->string('synapse_device_id')->nullable();
         });
     }
@@ -29,7 +28,6 @@ class AddSynapseFieldsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('synapse_user_id');
-            $table->dropColumn('synapse_access_token');
             $table->dropColumn('synapse_device_id');
         });
     }

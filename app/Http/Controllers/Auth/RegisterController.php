@@ -79,10 +79,10 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'main' => 1,
             'organisation_id' => $organisation->id,
+            'synapse_user_id' => $synapseUser['user_id'],
+            'device_id' => $synapseUser['device_id']
         ]);
-        $user->synapse_user_id = $synapseUser['user_id'];
-        $user->synapse_access_token = $synapseUser['access_token'];
-        $user->synapse_device_id =  $synapseUser['device_id'];
+        session(['synapse_access_token' => $synapseUser['access_token'] ]);
         $user->save();
         return $user;
     }

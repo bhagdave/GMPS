@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Matrix\Resources;
+namespace App\Matrix;
 
 use App\Matrix\AbstractResource;
 

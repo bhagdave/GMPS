@@ -12,7 +12,6 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -73,7 +72,6 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $synapseUser = $this->registerSynapseUser($data['name'], $data['password']);
-        Log::info("create1:" . print_r($synapseUser, true));
         $organisation = Organisation::create(['name' => $data['company_name']]);
         $user =  User::create([
             'name' => $data['name'],
@@ -81,15 +79,11 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'main' => 1,
             'organisation_id' => $organisation->id,
-            'syanpse_user_id' => $synapseUser['user_id'],
-            'syanpse_access_token' => $synapseUser['access_token'],
-            'syanpse_device_id' => $synapseUser['device_id'],
         ]);
         $user->synapse_user_id = $synapseUser['user_id'];
         $user->synapse_access_token = $synapseUser['access_token'];
         $user->synapse_device_id =  $synapseUser['device_id'];
         $user->save();
-        Log::info("create2:" . print_r($user, true));
         return $user;
     }
 
@@ -97,7 +91,6 @@ class RegisterController extends Controller
         $userData = new UserData($this->matrix);
         $name = str_replace(' ', '', $name);
         $regData = $userData->register($name, $password);
-        Log::info("registerSynapseUser:" . print_r($regData, true));
         return $regData;
     }
 }

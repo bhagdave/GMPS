@@ -4,6 +4,7 @@ namespace App\Matrix;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use App\Matrix\MatrixSession;
+use Illuminate\Support\Facades\Log;
 
 class Matrix{
 
@@ -108,7 +109,9 @@ class Matrix{
                     return null;
             }
         } catch (RequestException $e) {
-            throw new \Exception($e);
+            $response = $e->getResponse()->getBody()->getContents();
+            Log::info(gettype($response));
+            return $response;
         }
     }
 }

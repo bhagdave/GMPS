@@ -36,7 +36,9 @@ class GroupController extends Controller
             'name' => request('name'),
             'created_user_id' => $user->id
         ]);
-        $roomId = $this->createRoom($request->input('name'));
+        $roomDetails = $this->createRoom($request->input('name'));
+        $group->synapse_room_id = $roomDetails['room_id'];
+        $group->synapse_room_alias = $roomDetails['room_alias'];
         $group->save();
         $user->groups()->attach($group->id, [
             'type' => 'owner',
@@ -50,6 +52,7 @@ class GroupController extends Controller
         $room = new Room($this->matrix);
         $roomDetails = $room->createDirect($alias);
         Log::debug(print_r($roomDetails, true));
+        return $roomDetails;
     }
 
     public function view($uuid){

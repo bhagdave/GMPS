@@ -41,13 +41,13 @@ class LoginAttempt
             if (isset($user->synapse_user_id)){
                 $matrixData = $this->matrixSession->login($user->synapse_user_id, $event->credentials['password']);
                 if (gettype($matrixData) === 'string' ){
-                    Log::error("Error in login user for " . $event->credentials['email'] . " Error:" . $matrixData['error']);
+                    Log::error("Error in login user for " . $event->credentials['email'] . " Error:" . $matrixData);
                     return;
                 }
             } else {
                 $matrixData = $this->createSynapseUser($user, $event->credentials['email'], $event->credentials['password']);
                 if (gettype($matrixData) === 'string' ){
-                    Log::error("Error creaeting user for " . $event->credentials['email']);
+                    Log::error("Error creating user for " . $event->credentials['email'] . $matrixData);
                     return;
                 }
                 $user->synapse_user_id = $matrixData['user_id'];

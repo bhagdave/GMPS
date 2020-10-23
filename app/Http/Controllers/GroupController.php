@@ -4,10 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Matrix\Matrix;
+use App\Matrix\Room;
+use Illuminate\Support\Facades\Log;
 use App\Group;
 
 class GroupController extends Controller
 {
+    protected $matrix;
+
+    public function __construcT(Matrix $matrix){
+        $this->matrix = $matrix;
+    }
+
     public function index(){
         $user = Auth::user();
         return view('groups.index', compact('user'));
@@ -27,6 +36,7 @@ class GroupController extends Controller
             'name' => request('name'),
             'created_user_id' => $user->id
         ]);
+        $roomId = $this->createRoom($request->input('name'));
         $group->save();
         $user->groups()->attach($group->id, [
             'type' => 'owner',
@@ -34,6 +44,12 @@ class GroupController extends Controller
             'updated_at' => now()
         ]);
         return redirect('groups')->with('status', 'Group created');
+    }
+
+    private function createRoom($alias){
+        $room = new Room($this->matrix);
+        $roomDetails = $room->createDirect($alias);
+        Log::debug(print_r($roomDetails, true));
     }
 
     public function view($uuid){

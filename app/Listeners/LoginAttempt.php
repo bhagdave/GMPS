@@ -32,9 +32,11 @@ class LoginAttempt
      */
     public function handle(Attempting $event)
     { 
+        Log::debug('Handling login attempt');
         $user = $this->getUser($event->credentials['email']);
         if (isset($user->synapse_user_id)){
             $matrixData = $this->matrixSession->login($user->synapse_user_id, $event->credentials['password']);
+            Log::debug(print_r($matrixData, true));
             session(['synapse_access_token' => $matrixData['access_token'] ]);
         }
     }

@@ -14,8 +14,8 @@ class AddRoomDetailsToGroup extends Migration
     public function up()
     {
         Schema::table('groups', function (Blueprint $table) {
-            $table->string('synapse_room_id')->nullable();
-            $table->string('synapse_room_alias')->nullable();
+            $table->string('matrix_room_id')->nullable();
+            $table->string('matrix_room_alias')->nullable();
         });
     }
 
@@ -27,8 +27,8 @@ class AddRoomDetailsToGroup extends Migration
     public function down()
     {
         Schema::table('groups', function (Blueprint $table) {
-            $table->dropColumn('synapse_room_id');
-            $table->dropColumn('synapse_room_alias');
+            $table->dropColumn('matrix_room_id');
+            $table->dropColumn('matrix_room_alias');
         });
     }
 }

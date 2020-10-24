@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSynapseFieldsToUsersTable extends Migration
+class AddMatrixFieldsToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,8 @@ class AddSynapseFieldsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('synapse_user_id')->nullable();
-            $table->string('synapse_device_id')->nullable();
+            $table->string('matrix_user_id')->nullable();
+            $table->string('matrix_device_id')->nullable();
         });
     }
 
@@ -27,8 +27,8 @@ class AddSynapseFieldsToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('synapse_user_id');
-            $table->dropColumn('synapse_device_id');
+            $table->dropColumn('matrix_user_id');
+            $table->dropColumn('matrix_device_id');
         });
     }
 }

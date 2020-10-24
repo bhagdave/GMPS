@@ -38,24 +38,24 @@ class LoginAttempt
         Log::debug('Handling login attempt');
         $user = $this->getUser($event->credentials['email']);
         if (isset($user)){
-            if (isset($user->synapse_user_id)){
-                $matrixData = $this->matrixSession->login($user->synapse_user_id, $event->credentials['password']);
+            if (isset($user->matrix_user_id)){
+                $matrixData = $this->matrixSession->login($user->matrix_user_id, $event->credentials['password']);
                 if (gettype($matrixData) === 'string' ){
                     Log::error("Error in login user for " . $event->credentials['email'] . " Error:" . $matrixData);
                     return;
                 }
             } else {
-                $matrixData = $this->createSynapseUser($user, $event->credentials['email'], $event->credentials['password']);
+                $matrixData = $this->createMatrixUser($user, $event->credentials['email'], $event->credentials['password']);
                 if (gettype($matrixData) === 'string' ){
                     Log::error("Error creating user for " . $event->credentials['email'] . $matrixData);
                     return;
                 }
-                $user->synapse_user_id = $matrixData['user_id'];
-                $user->syanpse_device_id = $matrixData['device_id'];
+                $user->matrix_user_id = $matrixData['user_id'];
+                $user->matrix_device_id = $matrixData['device_id'];
                 $user->save();
             }
             Log::debug(print_r($matrixData, true));
-            session(['synapse_access_token' => $matrixData['access_token'] ]);
+            session(['matrix_access_token' => $matrixData['access_token'] ]);
         }
     }
 
@@ -63,7 +63,7 @@ class LoginAttempt
         return User::where('email', $email)->first();
     }
 
-    private function createSynapseUser($user, $password){
+    private function createMatrixUser($user, $password){
         $userData = new UserData($this->matrix);
         $name = str_replace(' ', '', $user->name);
         $regData = $userData->register($name, $password);

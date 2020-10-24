@@ -71,7 +71,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $synapseUser = $this->registerSynapseUser($data['name'], $data['password']);
+        $matrixUser = $this->registerMatrixUser($data['name'], $data['password']);
         $organisation = Organisation::create(['name' => $data['company_name']]);
         $user =  User::create([
             'name' => $data['name'],
@@ -79,15 +79,15 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'main' => 1,
             'organisation_id' => $organisation->id,
-            'synapse_user_id' => $synapseUser['user_id'],
-            'device_id' => $synapseUser['device_id']
+            'matrix_user_id' => $matrixUser['user_id'],
+            'matrix_device_id' => $matrixUser['device_id']
         ]);
-        session(['synapse_access_token' => $synapseUser['access_token'] ]);
+        session(['matrix_access_token' => $matrixUser['access_token'] ]);
         $user->save();
         return $user;
     }
 
-    private function registerSynapseUser($name, $password){
+    private function registerMatrixUser($name, $password){
         $userData = new UserData($this->matrix);
         $name = str_replace(' ', '', $name);
         $regData = $userData->register($name, $password);

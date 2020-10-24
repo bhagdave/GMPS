@@ -37,8 +37,8 @@ class GroupController extends Controller
             'created_user_id' => $user->id
         ]);
         $roomDetails = $this->createRoom($request->input('name'));
-        $group->synapse_room_id = $roomDetails['room_id'];
-        $group->synapse_room_alias = $roomDetails['room_alias'];
+        $group->matrix_room_id = $roomDetails['room_id'];
+        $group->matrix_room_alias = $roomDetails['room_alias'];
         $group->save();
         $user->groups()->attach($group->id, [
             'type' => 'owner',

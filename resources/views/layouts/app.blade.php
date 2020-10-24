@@ -27,7 +27,7 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
-                @if(Session::has('synapse_access_token'))
+                @if(Session::has('matrix_access_token'))
                     <div class="bg-success">
                         Connected to Matrix
                     </div>

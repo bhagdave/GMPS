@@ -71,7 +71,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $matrixUser = $this->registerMatrixUser($data['name'], $data['password']);
+        $matrixUser = User::registerMatrixUser($data['name'], $data['password'], $this->matrix);
         $organisation = Organisation::create(['name' => $data['company_name']]);
         $user =  User::create([
             'name' => $data['name'],
@@ -87,10 +87,4 @@ class RegisterController extends Controller
         return $user;
     }
 
-    private function registerMatrixUser($name, $password){
-        $userData = new UserData($this->matrix);
-        $name = str_replace(' ', '', $name);
-        $regData = $userData->register($name, $password);
-        return $regData;
-    }
 }

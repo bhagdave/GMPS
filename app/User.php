@@ -6,6 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Traits\UseUuid;
+use App\Matrix\Matrix;
+use App\Matrix\UserData;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -52,4 +55,12 @@ class User extends Authenticatable
             ->withPivot('type');
     }
 
+    public static function registerMatrixUser($name, $password,$matrix){
+        Log::info("registerMatrixForUser from User");
+        $userData = new UserData($matrix);
+        $name = str_replace(' ', '', $name);
+        $regData = $userData->register($name, $password);
+        Log::info(print_r($regData, true));
+        return $regData;
+    }
 }

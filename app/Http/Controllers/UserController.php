@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Mail;
 use Auth;
 use App\User;
 use App\Organisation;
 use App\Mail\InviteUser;
+use App\Matrix\Matrix;
 
 class UserController extends Controller
 {
+    public function __construct(Matrix $matrix)
+    {
+        $this->matrix = $matrix;
+    }
     public function delete(Request $request){
         $user = Auth::user();
         if ($user->main){
@@ -84,12 +90,17 @@ class UserController extends Controller
     }
 
     private function createUser(Request $request, $email, $organisation){
+        Log::info("CreateUser in UserController");
+        $matrixUser = User::registerMatrixUser($request->input('name'), $email, $this->matrix);
+        Log::info("CreateUser in UserController");
         return User::create([
             'name' => $request->input('name'),
             'nickname' => $request->input('nickname'),
             'organisation_id'=> $organisation,
             'email' => $email,
             'password' => Hash::make($request->input('password')),
+            'matrix_user_id' => $matrixUser['user_id'],
+            'matrix_device_id' => $matrixUser['device_id']
         ]);
     }
 }

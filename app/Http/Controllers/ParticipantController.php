@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Hash;
+use App\Matrix\Matrix;
 use Auth;
 use Mail;
 use App\Group;
@@ -13,6 +14,10 @@ use App\Mail\InviteParticipant;
 
 class ParticipantController extends Controller
 {
+    public function __construct(Matrix $matrix)
+    {
+        $this->matrix = $matrix;
+    }
     public function invite($uuid){
         $user = Auth::user();
         $group = Group::find($uuid);
@@ -88,21 +93,20 @@ class ParticipantController extends Controller
     }
 
     private function createUser(Request $request, $email){
+        $matrixUser = User::registerMatrixUser($request->input('name'), $request->input('nickname'), $this->matrix);
         return User::create([
             'name' => $request->input('name'),
             'nickname' => $request->input('nickname'),
             'email' => $email,
             'password' => Hash::make($request->input('password')),
+            'matrix_user_id' => $matrixUser['user_id'],
+            'matrix_device_id' => $matrixUser['device_id']
         ]);
     }
     public function remove($group, $participant){
-        echo('1');
         $user = User::find($participant);
-        echo('2');
         $message = "Removed->" . $user->name;
-        echo('3');
         $user->groups()->detach($group);
-        echo('4');
         return redirect()->back()->with('status', $message);
     }
 }

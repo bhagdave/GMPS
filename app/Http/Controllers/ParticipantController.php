@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuzaminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Hash;
 use App\Matrix\Matrix;
+use App\Matrix\Room;
 use Auth;
 use Mail;
 use App\Group;
@@ -89,7 +90,16 @@ class ParticipantController extends Controller
         $group = $request->session()->get('group');
         $user = $this->createUser($request, $email);
         $this->attachInvitedUserToGroup($user, $group);
+        $this->joinMatrixRoom($user, $group);
         return redirect('login')->with('status', 'Registered - Please login');
+    }
+
+    private function joinMatrixRoom($user, $group){
+        Auth::login($user);
+        $groupModel = Group::find($group);
+        $room = new Room($this->matrix);
+        $room->join($groupModel->matrix_room_alias);
+        Auth::logout($user);
     }
 
     private function createUser(Request $request, $email){

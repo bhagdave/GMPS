@@ -59,7 +59,7 @@ class Room extends AbstractResource
 
     public function join($roomId){
         if ($this->check()){
-            return $this->matrix()->request('POST', $this->endpoint('rooms/'. $roomId . '/join'), [
+            return $this->matrix()->request('POST', $this->endpoint('join/'. $roomId), [
             ],[
                 'access_token' => $this->data['access_token']
             ]);

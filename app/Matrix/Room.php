@@ -25,10 +25,13 @@ class Room extends AbstractResource
     {
         if ($this->check()) {
             return $this->matrix()->request('POST', $this->endpoint('createRoom'), [
-                    'preset' => 'trusted_private_chat',
+                    'preset' => 'public_chat',
                     'visibility' => 'private',
                     'is_direct' => true,
                     'room_alias_name' => $alias,
+                    "creation_content" => [
+                        "m.federate" => false
+                    ],
                     'initial_state' => [[
                         'content' => [
                             'guest_access' => 'can_join'

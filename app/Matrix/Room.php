@@ -43,4 +43,24 @@ class Room extends AbstractResource
         throw new \Exception('Not authenticated');
     }
 
+    public function invite($roomId, $userId){
+        if ($this->check()){
+            return $this->matrix()->request('POST', $this->endpoint('rooms/' . $roomId . '/invite'), [
+                'user_id' => $userId
+            ],[
+                'access_token' => $this->data['access_token']
+            ]);
+        }
+        throw new \Exception('Not invited');
+    }
+
+    public function join($roomId){
+        if ($this->check()){
+            return $this->matrix()->request('POST', $this->endpoint('rooms/'. $roomId . '/join'), [
+            ],[
+                'access_token' => $this->data['access_token']
+            ]);
+        }
+    }
+
 }

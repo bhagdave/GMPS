@@ -3,6 +3,8 @@
 namespace App\Matrix;
 
 use App\Matrix\AbstractResource;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Session management
@@ -68,5 +70,14 @@ class UserSession extends AbstractResource
             return $this->data;
         }
         throw new \Exception('Not authenticated');
+    }
+
+    public function sync(){
+        if ($this->check()){
+            $data = $this->matrix()->request('GET', $this->endpoint('sync'), [], [
+                'access_token' => $this->data['access_token']
+            ]);
+            Log::info(print_r($data, true));
+        }
     }
 }

@@ -72,11 +72,18 @@ class UserSession extends AbstractResource
         throw new \Exception('Not authenticated');
     }
 
-    public function sync(){
+    public function sync($user){
         if ($this->check()){
-            $data = $this->matrix()->request('GET', $this->endpoint('sync'), [], [
+            $endpoint = "sync";
+            if (isset($user->matrix_next_batch)){
+                Log::info("Doing sync with since of " . $user->matrix_next_batch);
+                $endpoint = $endpoint . "?" . urlencode($user->matrix_next_batch);
+            }
+            $data = $this->matrix()->request('GET', $this->endpoint($endpoint), [], [
                 'access_token' => $this->data['access_token']
             ]);
+            $user->matrix_next_batch = $data['next_batch'];
+            $user->save();
             Log::info(print_r($data, true));
         }
     }

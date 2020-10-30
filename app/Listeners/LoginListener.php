@@ -36,7 +36,7 @@ class LoginListener
         Log::debug('Handling LOGIN');
         if (isset($event->user)){
             Log::debug('Got the user');
-            $this->matrixSession->sync();
+            $this->matrixSession->sync($event->user);
         }
     }
 }

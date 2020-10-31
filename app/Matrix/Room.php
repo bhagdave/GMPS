@@ -66,4 +66,17 @@ class Room extends AbstractResource
         }
     }
 
+    public function sendTextMessage($roomId, $message){
+        if ($this->check()){
+            $data = $this->matrix()->request('PUT', $this->endpoint('rooms/' . $roomId . '/send/m.room.message/' . rand(0,200) ), 
+            [
+                'msgtype' => "m.text",
+                "body" => $message
+            ],[
+                'access_token' => $this->data['access_token']
+            ]);
+            return $data['event_id'];
+        }
+    } 
+
 }

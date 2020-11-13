@@ -9,11 +9,11 @@ use App\Traits\UseUuid;
 use App\Matrix\Matrix;
 use App\Matrix\UserData;
 use Illuminate\Support\Facades\Log;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
-    use UseUuid;
+    use Notifiable, HasApiTokens, UseUuid;
 
     /**
      * The attributes that are mass assignable.

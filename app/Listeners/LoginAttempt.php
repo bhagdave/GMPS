@@ -46,8 +46,8 @@ class LoginAttempt
                 }
             } else {
                 $matrixData = $this->createMatrixUser($user, $event->credentials['email'], $event->credentials['password']);
-                if (gettype($matrixData) === 'string' ){
-                    Log::error("Error creating user for " . $event->credentials['email'] . $matrixData);
+                if (isset($matrixData['errcode'])){
+                    Log::error("Error creating user for " . $event->credentials['email'] . $matrixData['error']);
                     return;
                 }
                 $user->matrix_user_id = $matrixData['user_id'];

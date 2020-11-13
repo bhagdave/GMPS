@@ -74,17 +74,20 @@ class UserSession extends AbstractResource
 
     public function sync($user){
         if ($this->check()){
-            $endpoint = "sync";
-            if (isset($user->matrix_next_batch)){
-                Log::info("Doing sync with since of " . $user->matrix_next_batch);
-                $endpoint = $endpoint . "?" . urlencode($user->matrix_next_batch);
+            // only sync if we have a token
+            if (isset($this->data['access_token'])){
+                $endpoint = "sync";
+                if (isset($user->matrix_next_batch)){
+                    Log::info("Doing sync with since of " . $user->matrix_next_batch);
+                    $endpoint = $endpoint . "?" . urlencode($user->matrix_next_batch);
+                }
+                $data = $this->matrix()->request('GET', $this->endpoint($endpoint), [], [
+                    'access_token' => $this->data['access_token']
+                ]);
+                $user->matrix_next_batch = $data['next_batch'];
+                $user->save();
+                Log::info(print_r($data, true));
             }
-            $data = $this->matrix()->request('GET', $this->endpoint($endpoint), [], [
-                'access_token' => $this->data['access_token']
-            ]);
-            $user->matrix_next_batch = $data['next_batch'];
-            $user->save();
-            Log::info(print_r($data, true));
         }
     }
 }

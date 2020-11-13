@@ -73,8 +73,12 @@ abstract class AbstractResource
 
     protected function setData($data)
     {
-        session(['matrix_data' => $data]);
-        $this->data = $data;
+        if (gettype($data) == 'string'){
+            $this->data = json_decode($data, true);
+        } else {
+            $this->data = $data;
+        }
+        session(['matrix_data' => $this->data]);
     }
 
     protected function getData()

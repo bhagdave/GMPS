@@ -20,3 +20,4 @@ Route::get('/user', function (Request $request) {
 });
 
 Route::apiResource('groups', 'Api\GroupController');
+Route::apiResource('organisations', 'Api\OrganisationController');

@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::get('/user', function (Request $request) {
+    echo("USER");
     return $request->user();
 });
+
+Route::apiResource('groups', 'Api\GroupController');

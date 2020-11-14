@@ -3,6 +3,8 @@ namespace App\Matrix;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\ClientException;
 use App\Matrix\MatrixSession;
 use Illuminate\Support\Facades\Log;
 
@@ -88,10 +90,6 @@ class Matrix{
      * @param $url
      * @param $options
      * @return mixed|null
-     * @throws AccessDeniedException
-     * @throws ApiException
-     * @throws AuthenticationException
-     * @throws ConflictingStateException
      */
     private function performRequest($method, $url, $options)
     {
@@ -109,9 +107,17 @@ class Matrix{
                     return null;
             }
         } catch (RequestException $e) {
+            Log::error('Request Exception in Matrix Library.');
             $response = $e->getResponse()->getBody()->getContents();
             Log::info(gettype($response));
-            return $response;
+            // make sure the response is an array too
+            return json_decode($response, true);
+        } catch (ConnectException $e) {
+            Log::error('Connect Exception in Matrix Library.');
+            return null;
+        } catch (ClientException $e) {
+            Log::error('Client Exception in Matrix Library.');
+            return null;
         }
     }
 }

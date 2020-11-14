@@ -50,9 +50,14 @@ class LoginAttempt
                     Log::error("Error creating user for " . $event->credentials['email'] . $matrixData['error']);
                     return;
                 }
-                $user->matrix_user_id = $matrixData['user_id'];
-                $user->matrix_device_id = $matrixData['device_id'];
-                $user->save();
+                if (isset($matrixData)){
+                    $user->matrix_user_id = $matrixData['user_id'];
+                    $user->matrix_device_id = $matrixData['device_id'];
+                    $user->save();
+                } else {
+                    Log::error('Matrix not responding to us.');
+                    return;
+                }
             }
             Log::debug(print_r($matrixData, true));
             session(['matrix_access_token' => $matrixData['access_token'] ]);

@@ -15,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::apiResource('groups', 'Api\GroupController');
-Route::apiResource('organisations', 'Api\OrganisationController');
-Route::apiResource('users', 'Api\UserController');
+Route::apiResource('groups', 'Api\GroupController')->middleware('auth:api');
+Route::apiResource('organisations', 'Api\OrganisationController')->middleware('auth:api');
+Route::apiResource('users', 'Api\UserController')->middleware('auth:api');

@@ -40,8 +40,8 @@ class LoginAttempt
         if (isset($user)){
             if (isset($user->matrix_user_id)){
                 $matrixData = $this->matrixSession->login($user->matrix_user_id, $event->credentials['password']);
-                if (gettype($matrixData) === 'string' ){
-                    Log::error("Error in login user for " . $event->credentials['email'] . " Error:" . $matrixData);
+                if (!isset($matrixData)){
+                    Log::error("Error in login user for " . $event->credentials['email'] . " Error:NO Matrix Server");
                     return;
                 }
             } else {

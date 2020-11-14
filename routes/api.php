@@ -14,10 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    echo("USER");
-    return $request->user();
-});
 
 Route::apiResource('groups', 'Api\GroupController');
 Route::apiResource('organisations', 'Api\OrganisationController');
+Route::apiResource('users', 'Api\UserController');

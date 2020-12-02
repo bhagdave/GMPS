@@ -14,6 +14,28 @@
                         </div>
                     @endif
                 </div>
+                <div class="row d-flex justify-content-between">
+                    <div class="pb-4 pl-4 ml-4 col-md-5">
+                        <div class="card">
+                            <div class="card-header">Joined Rooms</div>
+                                <div class="card-body">
+                                    @foreach ($joinedRooms['groups'] as $room)
+                                        <p>{{$room->name}}
+                                            <small>Unread Messages:{{$joinedRooms['rooms'][$room->matrix_room_id]['unread_notifications']['notification_count'] ?? 0}}</small>
+                                        </p>
+                                    @endforeach
+                                </div>
+                        </div>
+                    </div>
+                    <div class="pb-4 pr-4 mr-4 col-md-5">
+                        <div class="card">
+                            <div class="card-header">Invited Rooms</div>
+                                @foreach ($invitedRooms as $room)
+                                    <p>{{$room->name}}</p>
+                                @endforeach
+                        </div>
+                    </div>
+                </div>
                 <div class="card-footer">
                 </div>
             </div>

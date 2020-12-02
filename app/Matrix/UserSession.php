@@ -84,8 +84,10 @@ class UserSession extends AbstractResource
                 $data = $this->matrix()->request('GET', $this->endpoint($endpoint), [], [
                     'access_token' => $this->data['access_token']
                 ]);
+                $this->setData($data);
                 $user->matrix_next_batch = $data['next_batch'];
                 $user->save();
+                session(['matrix_sync' => $data ]);
                 Log::info(print_r($data, true));
             }
         }

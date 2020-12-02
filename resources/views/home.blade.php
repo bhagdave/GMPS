@@ -20,7 +20,7 @@
                             <div class="card-header">Joined Rooms</div>
                                 <div class="card-body">
                                     @foreach ($joinedRooms['groups'] as $room)
-                                        <p>{{$room->name}}
+                                        <p><a href="/room/{{$room->id}}"> {{$room->name}}</a>
                                             <small>Unread Messages:{{$joinedRooms['rooms'][$room->matrix_room_id]['unread_notifications']['notification_count'] ?? 0}}</small>
                                         </p>
                                     @endforeach

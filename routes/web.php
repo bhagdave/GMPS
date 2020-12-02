@@ -49,3 +49,7 @@ Route::prefix('user')->group(function(){
     Route::get('/invite/{uuid}/accept/{email}', 'UserController@accept')->name('user.accept');
     Route::post('/accept/invite', 'UserController@registerFromAccept')->name('user.accept.invite');
 });
+
+Route::prefix('room')->middleware('auth')->group(function(){
+    Route::get('/{uuid}', 'RoomController@index');
+});

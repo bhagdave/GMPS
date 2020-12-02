@@ -52,4 +52,5 @@ Route::prefix('user')->group(function(){
 
 Route::prefix('room')->middleware('auth')->group(function(){
     Route::get('/{uuid}', 'RoomController@index');
+    Route::post('/{uuid}/sendMessage', 'RoomController@sendMessage');
 });

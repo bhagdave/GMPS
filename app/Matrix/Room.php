@@ -3,6 +3,7 @@
 namespace App\Matrix;
 
 use App\Matrix\AbstractResource;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Room management
@@ -67,22 +68,34 @@ class Room extends AbstractResource
     }
 
     public function sendTextMessage($roomId, $message){
+        $this->setData(session('matrix_data')); // Not sure why tghis needs to happen here after being done in the constructor
+        Log::info("Sending a message to " . $roomId);
         if ($this->check()){
             $data = $this->matrix()->request('PUT', $this->endpoint('rooms/' . $roomId . '/send/m.room.message/' . rand(0,200) ), 
             [
                 'msgtype' => "m.text",
                 "body" => $message
             ],[
-                'access_token' => $this->data['access_token']
+                'access_token' => session('matrix_access_token')
             ]);
+            Log::info(print_r($data,true));
             return $data['event_id'];
         }
+        Log::info("Failed check() when sending message to " . $roomId);
     } 
 
     public function getMessages($roomId, $from){
+        $this->setData(session('matrix_data')); // Not sure why tghis needs to happen here after being done in the constructor
         $endpoint = "rooms/" . $roomId . "/messages?from=" . $from . "&dir=b";
         $returnData = $this->matrix()->request('GET', $this->endpoint($endpoint), [] , [
-            'access_token' => $this->data['access_token']
+            'access_token' => session('matrix_access_token')
+        ]);
+        return $returnData;
+    }
+    public function getUnfilteredMessages($roomId){
+        $endpoint = "rooms/" . $roomId . "/messages?dir=b";
+        $returnData = $this->matrix()->request('GET', $this->endpoint($endpoint), [] , [
+            'access_token' => session('matrix_access_token')
         ]);
         return $returnData;
     }

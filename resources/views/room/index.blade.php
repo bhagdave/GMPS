@@ -11,7 +11,14 @@
                     </div>
                 @endif
                 <div class="card-header bg-primary">{{ $group->name ?? '' }}</div>
-                    {{var_dump($messages['chunk'])}}
+                <div class="card-body">
+                    @foreach($roomEvents as $event)
+                        @if ($event['type'] == 'm.room.message')
+                            <p>{{$event['content']['body']}} <small>{{$event['sender']}}</small></p>
+                            {{Carbon\Carbon::createFromTimestamp($event['origin_server_ts']/1000)}}
+                        @endif
+                    @endforeach
+                </div>
                 <div class="card-footer">
                     <form method="post" action="/room/{{$group->id}}/sendMessage">
                         @csrf

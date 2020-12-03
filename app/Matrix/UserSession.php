@@ -4,7 +4,6 @@ namespace App\Matrix;
 
 use App\Matrix\AbstractResource;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Session management
@@ -78,17 +77,16 @@ class UserSession extends AbstractResource
             if (isset($this->data['access_token'])){
                 $endpoint = "sync";
                 if (isset($user->matrix_next_batch)){
-                    Log::info("Doing sync with since of " . $user->matrix_next_batch);
                     $endpoint = $endpoint . "?" . urlencode($user->matrix_next_batch);
                 }
                 $data = $this->matrix()->request('GET', $this->endpoint($endpoint), [], [
                     'access_token' => $this->data['access_token']
                 ]);
-                $this->setData($data);
+                // update the next batch on the user so we dont get lots of data each time
                 $user->matrix_next_batch = $data['next_batch'];
                 $user->save();
                 session(['matrix_sync' => $data ]);
-                Log::info(print_r($data, true));
+                return $data;
             }
         }
     }

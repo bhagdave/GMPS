@@ -90,4 +90,8 @@ abstract class AbstractResource
     {
         return $this->data !== null;
     }
+
+    public function getDataFromSession(){
+        $this->data = session('matrix_data');
+    }
 }

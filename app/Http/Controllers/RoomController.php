@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Group;
+use Auth;
 use App\Matrix\Matrix;
-use App\Matrix\Room;
+use Illuminate\Support\Facades\Log;
 
 class RoomController extends Controller
 {
     private $matrix;
-    private $matrixRoom;
     /**
      * Create a new controller instance.
      *
@@ -19,18 +19,24 @@ class RoomController extends Controller
     public function __construct(Matrix $matrix)
     {
         $this->matrix = $matrix;
-        $this->matrixRoom = new Room($matrix);
     }
 
     public function index($uuid){
+        $user = Auth::user();
         $group = Group::find($uuid);
-        $messages = $this->matrixRoom->getUnfilteredMessages($group->matrix_room_id);
-        return view('room.index', compact('group', 'messages'));
+        $syncData = $this->matrix->session->sync($user);
+        $roomEvents = $this->getRoomEvents($syncData, $group);
+        return view('room.index', compact('group', 'user', 'roomEvents'));
+    }
+
+    private function getRoomEvents($syncData, $group){
+        $roomData = $syncData['rooms'];
+        return $roomData['join'][$group->matrix_room_id]['timeline']['events'];
     }
 
     public function sendMessage(Request $request, $uuid){
         $group = Group::find($uuid);
-        $this->matrixRoom->sendTextMessage($group->matrix_room_id, $request->message);
+        $this->matrix->room->sendTextMessage($group->matrix_room_id, $request->message);
         return redirect()->back()->with('status', "Message Sent");
     }
 }

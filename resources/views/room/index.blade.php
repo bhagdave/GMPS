@@ -15,8 +15,7 @@
                     @foreach($roomEvents as $event)
                         @if ($event['type'] == 'm.room.message')
                             <p>{{$event['content']['body']}} <small>{{$event['sender']}}</small></p>
-                            {{$event['origin_server_ts']}}
-                            {{Carbon\Carbon::now()->getPreciseTimestamp(3)}}
+                            {{Carbon\Carbon::createFromTimestamp($event['origin_server_ts']/1000)}}
                         @endif
                     @endforeach
                 </div>

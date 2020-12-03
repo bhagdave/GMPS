@@ -3,6 +3,7 @@
 namespace App\Matrix;
 
 use App\Matrix\Matrix;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Abstract Resource
@@ -45,6 +46,7 @@ abstract class AbstractResource
      */
     public function __construct(Matrix $matrix)
     {
+        Log::info("Constructor for " . get_class($this));
         $this->matrix = $matrix;
         $this->data = session('matrix_data');
     }
@@ -89,5 +91,9 @@ abstract class AbstractResource
     public function check()
     {
         return $this->data !== null;
+    }
+
+    public function getDataFromSession(){
+        $this->data = session('matrix_data');
     }
 }

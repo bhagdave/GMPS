@@ -76,7 +76,7 @@ class Room extends AbstractResource
                 'msgtype' => "m.text",
                 "body" => $message
             ],[
-                'access_token' => session('matrix_access_token')
+                'access_token' => $this->data['access_token']
             ]);
             Log::info(print_r($data,true));
             return $data['event_id'];
@@ -85,17 +85,10 @@ class Room extends AbstractResource
     } 
 
     public function getMessages($roomId, $from){
-        $this->setData(session('matrix_data')); // Not sure why tghis needs to happen here after being done in the constructor
         $endpoint = "rooms/" . $roomId . "/messages?from=" . $from . "&dir=b";
+        Log::info("Get Messages EndPoint = $endpoint");
         $returnData = $this->matrix()->request('GET', $this->endpoint($endpoint), [] , [
-            'access_token' => session('matrix_access_token')
-        ]);
-        return $returnData;
-    }
-    public function getUnfilteredMessages($roomId){
-        $endpoint = "rooms/" . $roomId . "/messages?dir=b";
-        $returnData = $this->matrix()->request('GET', $this->endpoint($endpoint), [] , [
-            'access_token' => session('matrix_access_token')
+            'access_token' => $this->data['access_token']
         ]);
         return $returnData;
     }

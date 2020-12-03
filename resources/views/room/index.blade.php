@@ -11,7 +11,8 @@
                     </div>
                 @endif
                 <div class="card-header bg-primary">{{ $group->name ?? '' }}</div>
-                    {{var_dump($messages['chunk'])}}
+                    {{var_dump($messages)}}
+                    {{$user->matrix_next_batch}}
                 <div class="card-footer">
                     <form method="post" action="/room/{{$group->id}}/sendMessage">
                         @csrf

@@ -6,11 +6,13 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ClientException;
 use App\Matrix\MatrixSession;
+use App\Matrix\Room;
 use Illuminate\Support\Facades\Log;
 
 class Matrix{
 
     public $session;
+    public $room;
     protected $client;
     private $baseUrl;
     private $domain;
@@ -36,10 +38,12 @@ class Matrix{
         }
     }
 
-    private function setupResources(){
+    public function setupResources(){
+        Log::info("Setup matrix resources");
         $this->baseUrl = $this->domain.'_matrix/client/r0';
         $this->client = new Client(['verify' => false]);
         $this->session = new MatrixSession($this);
+        $this->room = new Room($this);
     }
 
     public function showDebugInfo(){
@@ -50,6 +54,10 @@ class Matrix{
       return $this->session;
     }
 
+    public function updateSession(){
+        $this->session->getDataFromSession();
+        $this->room->getDataFromSession();
+    }
     /**
      * Internal method for handling requests
      *

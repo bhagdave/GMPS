@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 use App\Matrix\Matrix;
 use Illuminate\Support\Facades\Log;
 
+/**
+*
+*        This is to force the session data into the matrix object on each request.
+*        The Matrix object is created by a service provider but the session is not available
+*        in a service provider. Hence this middleware
+*/
 class UpdateMatrixData
 {
     private $matrix;
@@ -23,7 +29,6 @@ class UpdateMatrixData
      */
     public function handle(Request $request, Closure $next)
     {
-        Log::info("--------------------My Middleware----------------");
         $this->matrix->updateSession();
         return $next($request);
     }

@@ -11,7 +11,7 @@
                     </div>
                 @endif
                 <div class="card-header bg-primary">{{ $group->name ?? '' }}</div>
-                    {{var_dump($messages)}}
+                    {{var_dump($thisRoomData)}}
                     {{$user->matrix_next_batch}}
                 <div class="card-footer">
                     <form method="post" action="/room/{{$group->id}}/sendMessage">

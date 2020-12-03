@@ -86,7 +86,6 @@ class Room extends AbstractResource
 
     public function getMessages($roomId, $from){
         $endpoint = "rooms/" . $roomId . "/messages?from=" . $from . "&dir=b";
-        Log::info("Get Messages EndPoint = $endpoint");
         $returnData = $this->matrix()->request('GET', $this->endpoint($endpoint), [] , [
             'access_token' => $this->data['access_token']
         ]);

@@ -5,7 +5,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ClientException;
-use App\Matrix\MatrixSession;
+use App\Matrix\UserSession;
 use App\Matrix\Room;
 use Illuminate\Support\Facades\Log;
 
@@ -42,7 +42,7 @@ class Matrix{
         Log::info("Setup matrix resources");
         $this->baseUrl = $this->domain.'_matrix/client/r0';
         $this->client = new Client(['verify' => false]);
-        $this->session = new MatrixSession($this);
+        $this->session = new UserSession($this);
         $this->room = new Room($this);
     }
 

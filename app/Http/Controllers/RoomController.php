@@ -25,11 +25,13 @@ class RoomController extends Controller
         $user = Auth::user();
         $group = Group::find($uuid);
         $syncData = $this->matrix->session->sync($user);
-        ddd($syncData);
+        $roomEvents = $this->getRoomEvents($syncData, $group);
+        return view('room.index', compact('group', 'user', 'roomEvents'));
+    }
+
+    private function getRoomEvents($syncData, $group){
         $roomData = $syncData['rooms'];
-        $thisRoomData = $roomData['join'][$group->matrix_room_id];
-        $messages = $this->matrix->room->getMessages($group->matrix_room_id, 's26_57_0_1_1_1_1_62_1');
-        return view('room.index', compact('group', 'messages', 'user', 'thisRoomData'));
+        return $roomData['join'][$group->matrix_room_id]['timeline']['events'];
     }
 
     public function sendMessage(Request $request, $uuid){
